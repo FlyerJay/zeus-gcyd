@@ -7,4 +7,5 @@ module.exports = app => {
   //   await app.model.sync()
   // })
   require('./router/user')(app)
+  require('./router/external')(app)
 }

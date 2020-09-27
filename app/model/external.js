@@ -62,9 +62,25 @@ module.exports = app => {
    * @param {*} params
    * 创建一个外部公司
    */
-  External.createExternal = function(params) {
-    return params
+  External.createExternal = async function(params) {
+    const { externalName, accountType } = params
+    const external = await this.create({
+      externalName,
+      accountType
+    })
+    const internalId = String(10000 + external.externalId)
+    const access = app.service.account.generateAccessToken(internalId)
+    return this.update({
+      internalId: String(internalId),
+      accessId: access.accessId,
+      accessSecret: access.accessSecret
+    }, {
+      where: {
+        externalId: external.externalId
+      }
+    })
   }
+
   /**
    *
    * @param {*} params
@@ -76,6 +92,22 @@ module.exports = app => {
         externalId: params.externalId
       }
     })
+  }
+
+  External.externalList = async function(params) {
+    const { externalName = '', page, pageSize } = params
+    const list = await this.findAndCountAll({
+      where: {
+        externalName: {
+          [Op.and]: {
+            [Op.like]: `%${externalName}%`
+          }
+        }
+      },
+      offset: Number(page - 1),
+      limit: Number(pageSize)
+    })
+    return list
   }
 
   /**
@@ -104,7 +136,7 @@ module.exports = app => {
       internalId: user.internalId,
       userName: user.userName,
       accountType: user.accountType,
-      type: 'enternal',
+      type: 'external',
       createTime: user.createTime,
       externalId: user.externalId,
       externalName: user.externalName
