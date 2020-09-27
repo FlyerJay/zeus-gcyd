@@ -6,7 +6,7 @@ class ExternalController extends Controller {
     ctx.validate({
       accountType: 'string'
     })
-    const responseData = this.service.external.createExternal(ctx.request.bdoy)
+    const responseData = await this.service.external.createExternal(ctx.request.body)
     ctx.body = {
       code: 200,
       data: responseData

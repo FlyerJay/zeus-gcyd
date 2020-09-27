@@ -1,6 +1,7 @@
 /**
  * @desc 外部公司实体类型
  */
+const accessUtils = require('../utils/access')
 
 module.exports = app => {
   const { STRING, INTEGER, DATE, Op } = app.Sequelize
@@ -64,21 +65,23 @@ module.exports = app => {
    */
   External.createExternal = async function(params) {
     const { externalName, accountType } = params
-    const external = await this.create({
+    const external = await this.findOne({
+      order: [
+        [ 'createTime', 'DESC' ]
+      ]
+    })
+    const internalId = String(Number(external.internalId) + 1)
+    const access = await accessUtils.generateAccessToken(internalId)
+    const options = {
       externalName,
-      accountType
-    })
-    const internalId = String(10000 + external.externalId)
-    const access = app.service.account.generateAccessToken(internalId)
-    return this.update({
-      internalId: String(internalId),
+      accountType,
       accessId: access.accessId,
-      accessSecret: access.accessSecret
-    }, {
-      where: {
-        externalId: external.externalId
-      }
-    })
+      accessSecret: access.accessSecret,
+      internalId,
+      createTime: Date.now()
+    }
+    console.log(options)
+    return this.create(options)
   }
 
   /**

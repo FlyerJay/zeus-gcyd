@@ -2,7 +2,7 @@ const Service = require('egg').Service
 
 class ExternalService extends Service {
   async createExternal(params) {
-    return this.app.model.External.createExternal(params)
+    return await this.app.model.External.createExternal(params)
   }
 
   async externalList(params) {
