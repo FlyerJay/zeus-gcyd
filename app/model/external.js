@@ -89,7 +89,21 @@ module.exports = app => {
    * @param {*} params
    * 修改公司属性
    */
-  External.updateExternal = function(params) {
+  External.updateExternal = async function(params) {
+    if (params.userName) {
+      const isExist = await this.findOne({
+        where: {
+          userName: params.userName,
+          externalId: {
+            [Op.ne]: params.externalId
+          }
+        }
+      })
+      if (isExist) {
+        throw new Error('登录账号已经存在，请您更换')
+      }
+    }
+
     return this.update(params, {
       where: {
         externalId: params.externalId
