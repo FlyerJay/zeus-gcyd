@@ -77,21 +77,46 @@ module.exports = app => {
     return this.create(options)
   }
 
-  Member.memberLogin = async function({ mobile, password }) {
+  Member.memberList = async function(params) {
+    const { memberName = '', mobile = '', page, pageSize, externalId } = params
+    const list = await this.findAndCountAll({
+      where: {
+        memberName: {
+          [Op.like]: `%${memberName}%`
+        },
+        mobile: {
+          [Op.like]: `%${mobile}%`
+        },
+        externalId
+      },
+      offset: Number(page - 1),
+      limit: Number(pageSize)
+    })
+    return list
+  }
+
+  Member.memberLogin = async function({ userName, password }) {
     const user = await this.findOne({
       where: {
-        mobile,
+        mobile: userName,
         password
       }
     })
     if (!user) return
-    const enterprise = await this.findOne({
+    const enterprise = await app.model.External.findOne({
       where: {
         externalId: user.externalId
       }
     })
     if (!enterprise) throw new Error('成员信息有误')
-    if (user.roleId) throw new Error('没有登录权限，请联系管理员添加')
+    if (!user.roleId) throw new Error('没有登录权限，请联系管理员添加')
+
+    const role = await app.model.MemberRole.findOne({
+      where: {
+        roleId: user.roleId
+      },
+      attributes: [ 'permissions' ]
+    })
 
     const member = {
       internalId: enterprise.internalId,
@@ -101,7 +126,8 @@ module.exports = app => {
       accountType: enterprise.accountType,
       type: 'member',
       createTime: user.createTime,
-      externalName: enterprise.externalName
+      externalName: enterprise.externalName,
+      permissions: JSON.parse(role.permissions)
     }
 
     return member

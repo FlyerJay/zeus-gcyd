@@ -8,6 +8,11 @@ class UserService extends Service {
         userName: options.userName,
         password: options.password
       })
+    } else {
+      userInfo = await this.app.model.Member.memberLogin({
+        userName: options.userName,
+        password: options.password
+      })
     }
 
     if (!userInfo) {

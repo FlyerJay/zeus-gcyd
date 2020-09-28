@@ -1,22 +1,17 @@
 const Service = require('egg').Service
 
 class RoleService extends Service {
-  async createRole(params) {
+  async createMember(params) {
     const options = Object.assign({}, params, {
       externalId: this.ctx.user.externalId
     })
-    return await this.app.model.MemberRole.createRole(options)
+    return await this.app.model.Member.createMember(options)
   }
 
-  async roleListPage(params) {
+  async memberList(params) {
     const { page = 0, pageSize = 15 } = params
     const options = Object.assign({}, params, { pageSize, page, externalId: this.ctx.user.externalId })
-    return this.app.model.MemberRole.roleListPage(options)
-  }
-
-  async roleList(params) {
-    const options = Object.assign({}, params, { externalId: this.ctx.user.externalId })
-    return this.app.model.MemberRole.roleList(options)
+    return this.app.model.Member.memberList(options)
   }
 }
 

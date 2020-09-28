@@ -1,6 +1,6 @@
 const Controller = require('egg').Controller
 
-class ExternalController extends Controller {
+class RoleController extends Controller {
   async create() {
     const { ctx } = this
     ctx.validate({
@@ -22,6 +22,15 @@ class ExternalController extends Controller {
       data: responseData
     }
   }
+
+  async list() {
+    const { ctx } = this
+    const responseData = await this.service.role.roleList(ctx.query)
+    ctx.body = {
+      code: 200,
+      data: responseData
+    }
+  }
 }
 
-module.exports = ExternalController
+module.exports = RoleController

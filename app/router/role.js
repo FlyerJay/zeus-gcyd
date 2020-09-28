@@ -7,5 +7,6 @@ module.exports = app => {
 
   roleV1Router.post('/create', authUser, role.create)
   roleV1Router.get('/list/page', authUser, role.listPage)
+  roleV1Router.get('/list', authUser, role.list)
 }
 
