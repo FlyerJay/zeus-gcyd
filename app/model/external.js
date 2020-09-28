@@ -80,7 +80,6 @@ module.exports = app => {
       internalId,
       createTime: Date.now()
     }
-    console.log(options)
     return this.create(options)
   }
 
@@ -116,9 +115,7 @@ module.exports = app => {
     const list = await this.findAndCountAll({
       where: {
         externalName: {
-          [Op.and]: {
-            [Op.like]: `%${externalName}%`
-          }
+          [Op.like]: `%${externalName}%`
         }
       },
       offset: Number(page - 1),
