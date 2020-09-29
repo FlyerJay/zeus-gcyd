@@ -56,10 +56,24 @@ module.exports = app => {
         comId
       }
     })
+    const supplier = await app.model.Supplier.findOne({
+      where: {
+        supplierId
+      }
+    })
     if (ret) {
       await ret.update({ isValide: 1 })
     } else {
       await this.create({ supplierId, comId, isValide: 1 })
+    }
+    const freight = await app.model.Freight.findOne({
+      where: {
+        address: supplier.address,
+        comId
+      }
+    })
+    if (!freight) {
+      await app.model.Freight.createFreight({ comId, address: supplier.address, freight: 0 })
     }
     return '开启成功'
   }

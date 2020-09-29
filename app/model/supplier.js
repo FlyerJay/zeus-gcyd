@@ -30,7 +30,7 @@ module.exports = app => {
   }, {
     freezeTabName: true,
     tableName: 'supplier',
-    underscored: true,
+    underscored: false,
     timestamps: false
   })
 
