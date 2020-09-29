@@ -90,5 +90,16 @@ module.exports = app => {
     })
   }
 
+  Freight.addressList = async function({ comId }) {
+    return this.findAll({
+      where: {
+        comId
+      },
+      attributes: [
+        'address'
+      ]
+    })
+  }
+
   return Freight
 }

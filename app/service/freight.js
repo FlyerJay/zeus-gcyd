@@ -22,6 +22,10 @@ class FreightService extends Service {
     const options = Object.assign({}, params, { pageSize, page, comId: this.ctx.user.internalId })
     return await this.app.model.Freight.freightList(options)
   }
+
+  async addressList() {
+    return await this.app.model.Freight.addressList({ comId: this.ctx.user.internalId })
+  }
 }
 
 module.exports = FreightService

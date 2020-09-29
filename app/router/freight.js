@@ -9,5 +9,6 @@ module.exports = app => {
   freightV1Router.post('/create', authUser, freight.create)
   freightV1Router.post('/update', authUser, freight.update)
   freightV1Router.post('/remove', authUser, freight.remove)
+  freightV1Router.get('/address', authUser, freight.address)
 }
 

@@ -45,9 +45,46 @@ module.exports = app => {
   }, {
     freezeTabName: true,
     tableName: 'supplier_relate',
-    underscored: true,
+    underscored: false,
     timestamps: false
   })
+
+  SupplierRelate.open = async function({ supplierId, comId }) {
+    const ret = await this.findOne({
+      where: {
+        supplierId,
+        comId
+      }
+    })
+    if (ret) {
+      await ret.update({ isValide: 1 })
+    } else {
+      await this.create({ supplierId, comId, isValide: 1 })
+    }
+    return '开启成功'
+  }
+
+  SupplierRelate.close = async function({ supplierId, comId }) {
+    await this.update({
+      isValide: 0
+    }, {
+      where: {
+        supplierId,
+        comId
+      }
+    })
+    return '关闭成功'
+  }
+
+  SupplierRelate.updateSr = function(params) {
+    const { supplierId, comId } = params
+    return this.update(params, {
+      where: {
+        supplierId,
+        comId
+      }
+    })
+  }
 
   return SupplierRelate
 }

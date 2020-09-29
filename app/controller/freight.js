@@ -47,6 +47,15 @@ class FreightController extends Controller {
       data: responseData
     }
   }
+
+  async address() {
+    const { ctx } = this
+    const responseData = await this.service.freight.addressList(ctx.query)
+    ctx.body = {
+      code: 200,
+      data: responseData
+    }
+  }
 }
 
 module.exports = FreightController
