@@ -96,8 +96,7 @@ module.exports = app => {
     })
   }
 
-  MemberRole.roleListPage = async function(params) {
-    const { roleName = '', page, pageSize, externalId } = params
+  MemberRole.roleListPage = async function({ roleName = '', page, pageSize, externalId }) {
     const list = await this.findAndCountAll({
       where: {
         roleName: {
