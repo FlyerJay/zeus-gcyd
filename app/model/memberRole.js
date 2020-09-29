@@ -56,6 +56,34 @@ module.exports = app => {
     return this.create(options)
   }
 
+  MemberRole.updateRole = function({ roleName, permissions, roleId, remark }) {
+    return this.update({
+      roleName,
+      permissions,
+      remark
+    }, {
+      where: {
+        roleId
+      }
+    })
+  }
+
+  MemberRole.removeRole = async function({ roleId }) {
+    const user = await app.model.Member.findOne({
+      where: {
+        roleId
+      }
+    })
+    if (user) {
+      throw new Error('角色下有关联的用户，不能删除')
+    }
+    return this.destroy({
+      where: {
+        roleId
+      }
+    })
+  }
+
   MemberRole.roleList = function({ externalId, roleName = '' }) {
     return this.findAll({
       where: {
