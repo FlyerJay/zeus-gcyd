@@ -6,6 +6,8 @@ module.exports = app => {
   const authUser = middleware.authUser()
 
   memberV1Router.post('/create', authUser, member.create)
+  memberV1Router.post('/update', authUser, member.update)
+  memberV1Router.post('/remove', authUser, member.remove)
   memberV1Router.get('/list', authUser, member.list)
 }
 

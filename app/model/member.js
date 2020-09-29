@@ -77,6 +77,23 @@ module.exports = app => {
     return this.create(options)
   }
 
+  Member.updateMember = async function({ memberName, roleId, memberId }) {
+    return this.update({
+      memberName,
+      roleId
+    }, {
+      where: {
+        memberId
+      }
+    })
+  }
+
+  Member.removeMember = async function({ memberId }) {
+    return this.destroy({
+      where: { memberId }
+    })
+  }
+
   Member.memberList = async function(params) {
     const { memberName = '', mobile = '', page, pageSize, externalId } = params
     const list = await this.findAndCountAll({
@@ -116,6 +133,14 @@ module.exports = app => {
         roleId: user.roleId
       },
       attributes: [ 'permissions' ]
+    })
+
+    await this.update({
+      lastLoginTime: Date.now()
+    }, {
+      where: {
+        memberId: user.memberId
+      }
     })
 
     const member = {
