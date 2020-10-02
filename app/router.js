@@ -11,4 +11,6 @@ module.exports = app => {
   require('./router/role')(app)
   require('./router/member')(app)
   require('./router/freight')(app)
+  require('./router/price')(app)
+  require('./router/inventory')(app)
 }
