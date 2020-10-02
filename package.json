@@ -33,7 +33,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-zeus-gcyd",
+    "start": "egg-scripts start --daemon --title=egg-server-zeus-gcyd --port=7002",
     "stop": "egg-scripts stop --title=egg-server-zeus-gcyd",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
