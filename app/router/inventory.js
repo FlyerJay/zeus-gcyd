@@ -6,5 +6,6 @@ module.exports = app => {
   const authUser = middleware.authUser()
 
   inventroyV1Router.get('/list', authUser, inventory.list)
+  inventroyV1Router.get('/search', authUser, inventory.search)
 }
 

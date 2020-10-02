@@ -9,6 +9,15 @@ class InventoryController extends Controller {
       data: responseData
     }
   }
+
+  async search() {
+    const { ctx } = this
+    const responseData = await this.service.inventory.productList(ctx.query)
+    ctx.body = {
+      code: 200,
+      data: responseData
+    }
+  }
 }
 
 module.exports = InventoryController

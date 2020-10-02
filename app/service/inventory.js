@@ -6,6 +6,12 @@ class InventoryService extends Service {
     const options = Object.assign({}, params, { pageSize: Number(pageSize), page, comId: this.ctx.user.internalId })
     return await this.app.model.SupplierInventory.inventoryList(options)
   }
+
+  async productList(params) {
+    const { page = 0, pageSize = 15 } = params
+    const options = Object.assign({}, params, { pageSize: Number(pageSize), page, comId: this.ctx.user.internalId })
+    return await this.app.model.SupplierInventory.productList(options)
+  }
 }
 
 module.exports = InventoryService
